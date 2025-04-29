@@ -1,0 +1,142 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="{% if request.COOKIES.dark_mode == 'true' %}dark{% endif %}">
+  <head>
+    <title>Django Tailwind</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="{% static 'js/darkSet.js' %}"></script>
+    <!-- CSS -->
+    <!-- ✅ Toast UI Editor v3.1.5 -->
+    <link
+    rel="stylesheet"
+    href="https://uicdn.toast.com/editor/3.1.5/toastui-editor.min.css"
+  />
+  
+  <!-- JS for v3.1.5 -->
+  <script src="https://uicdn.toast.com/editor/3.1.5/toastui-editor-all.min.js"></script>
+
+  <link
+  id="favicon"
+  rel="icon"
+  type="image/svg+xml"
+  href="{% static 'favicon.svg' %}"
+  data-light="{% static 'favicon.svg' %}"
+  data-dark="{% static 'favicon-white.svg' %}"
+/>
+<script src="{% static 'js/updateFavicon.js' %}"></script>
+    {% tailwind_css %}
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"
+    ></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    {% block head %} {% endblock head %}
+  </head>
+
+  <body>
+    <main
+      class="grid grid-cols-2 justify-center items-start min-h-screen holder"
+    >
+<!-- 🌐 Navigation -->
+<nav class="bg-emerald-600 px-6 py-4 col-span-2 shadow text-white" x-data="{ menuOpen: false, darkMode: localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches) }"
+      x-init="$watch('darkMode', value => {
+        document.documentElement.classList.toggle('dark', value);
+        localStorage.theme = value ? 'dark' : 'light';
+      })">
+  <div class="flex justify-between items-center">
+    <a href="/" class="text-xl font-semibold">MentorApp</a>
+
+    <!-- Desktop nav -->
+    <div class="space-x-4 flex items-center max-md:hidden">
+      <a href="{% url 'home' %}" class="hover:underline">Home</a>
+      <a href="{% url 'create_mentor' %}" class="hover:underline">Create</a>
+      {% if user.is_authenticated %}
+        <span>Hi, {{ user.username }}!</span>
+        <form method="POST" action="{% url 'account_logout' %}" class="inline">
+          {% csrf_token %}
+          <button type="submit" class="hover:underline">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'account_login' %}" class="hover:underline">Login</a>
+      {% endif %}
+
+      <!-- Dark Mode Button (Desktop) -->
+      <button @click="darkMode = !darkMode">
+        <svg class="w-6 h-6 stroke-yellow-600 dark:stroke-yellow-300 transition-colors duration-300" :class="{ 'hidden': darkMode, 'block': !darkMode }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+        </svg>
+        <svg class="w-6 h-6 stroke-gray-800 dark:stroke-gray-300 transition-colors duration-300" :class="{ 'block': darkMode, 'hidden': !darkMode }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Hamburger menu toggle (mobile only) -->
+    <button @click="menuOpen = !menuOpen" class="block md:hidden">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav -->
+  <div x-show="menuOpen" class="md:hidden mt-4 space-y-2">
+    <a href="{% url 'home' %}" class="block hover:underline">Home</a>
+    <a href="{% url 'create_mentor' %}" class="block hover:underline">Create</a>
+    {% if user.is_authenticated %}
+      <span class="block">Hi, {{ user.username }}!</span>
+      <form method="POST" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="hover:underline block">Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'account_login' %}" class="block hover:underline">Login</a>
+    {% endif %}
+
+    <!-- Dark Mode Toggle (Mobile) -->
+    <button @click="darkMode = !darkMode" class="mt-2">
+      <svg class="w-6 h-6 stroke-yellow-600 dark:stroke-yellow-300 transition-colors duration-300" :class="{ 'hidden': darkMode, 'block': !darkMode }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+      </svg>
+      <svg class="w-6 h-6 stroke-gray-800 dark:stroke-gray-400 transition-colors duration-300" :class="{ 'block': darkMode, 'hidden': !darkMode }" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+<!-- 🧱 Main content -->
+      <section
+        class="col-span-2 grid grid-cols-1 justify-center items-center px-6 py-8"
+      >
+      <div class="flex justify-center mt-2 text-foreground">
+        {% if messages %}
+          <ul>
+            {% for message in messages %}
+              <li class="border p-2 border-border bg-background rounded-md {{ message.tags }}">
+                {{ message }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+        {% block body %}{% endblock body %}
+      </section>
+
+      <!-- 👣 Footer -->
+      <footer
+        class="bg-background col-span-2 text-center py-4 text-sm text-foreground mt-10"
+      >
+        &copy; {{ now|date:"Y" }} MentorApp. All rights reserved.
+      </footer>
+    </main>
+    {% block extra_body %}{% endblock extra_body %}
+    {% block page_js %}{% endblock page_js %}
+  </body>
+</html>

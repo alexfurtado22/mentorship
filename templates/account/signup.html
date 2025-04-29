@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load allauth account %}
+
+{% block body %}
+<section class="col-span-2 grid place-items-center min-h-[70vh] px-4">
+  <div class="w-full max-w-md p-8 rounded-xl shadow-lg border border-border">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold">Create a new account</h1>
+      <p class="text-sm mt-1">
+        Already have an account?
+        <a href="{{ login_url }}" class="text-emerald-600 font-semibold hover:underline">Sign in instead</a>
+      </p>
+    </div>
+
+    <form method="POST" class="space-y-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="error">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div>
+        
+        {% render_field form.email class="w-full mt-1 p-2 rounded-md border border-border bg-background focus:ring-2 focus:ring-emerald-500 focus:outline-none" %}
+        {% if form.email.errors %}
+          <div class="error">{{ form.email.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="space-y-1">
+        
+        {% render_field form.password1 class="w-full mt-1 p-2 rounded-md border border-border bg-background focus:ring-2 focus:ring-emerald-500 focus:outline-none" %}
+        {% if form.password1.errors %}
+          <div class="error ">{{ form.password1.errors }}</div>
+        {% endif %}
+      </div>
+
+      <details class="text-sm rounded-md border border-border [&_svg]:open:rotate-90">
+        <summary class="px-2 py-1 flex justify-between items-center list-none cursor-pointer bg-background">
+          <div class="">Password requirements</div>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </span>
+        </summary>
+        <div class="px-2 py-1 mt-2 w-full [&>ul]:space-y-1">{{ form.password1.help_text|safe }}</div>
+      </details>
+
+      <div>
+        <label for="{{ form.password2.id_for_label }}" class="sr-only">Confirm Password</label>
+        {% render_field form.password2 class="w-full mt-1 p-2 rounded-md border border-border bg-background focus:ring-2 focus:ring-emerald-500 focus:outline-none" %}
+        {% if form.password2.errors %}
+          <div class="error text-sm mt-1">{{ form.password2.errors }}</div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="w-full py-2 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-semibold transition">
+        Sign up
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock body %}

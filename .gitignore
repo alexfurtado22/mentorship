@@ -1,0 +1,55 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.env
+
+# Virtual environment
+env/
+venv/
+.venv/
+.env.local/
+.env.docker/
+.env.local
+.env.docker
+
+# Django
+db.sqlite3
+*.log
+media/
+staticfiles/
+local_settings.py
+
+
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Test Coverage Reports
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+*.pytest_cache
+
+# Node.js (if you're using tools like Tailwind or Webpack)
+node_modules/
+npm-debug.log*
+
+# Build files
+*.egg-info/
+.eggs/
+dist/
+build/
+.env.local
+.env.docker

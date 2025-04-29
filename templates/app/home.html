@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% load image_tags %}
+
+{% block body %}
+<div class="col-span-2">
+  <div class="flex flex-col items-center mb-4 gap-2">
+    <h1 class="text-2xl font-bold mb-4">Mentorship</h1>
+
+    <div class="mt-4 size-[400px] max-sm:size-70">
+      <canvas
+        id="statusChart"
+        data-labels='{{ estagios_flat|safe }}'
+        data-data='{{ qtd_estagios|safe }}'
+      ></canvas>
+
+    </div>
+
+    <p class="mb-4">
+      You have created {{ user.mentorship_count|intcomma }}
+      mentorship{{ user.mentorship_count|pluralize }}
+    </p>
+
+    <form action="" method="get" class="flex items-center max-sm:flex-col gap-2">
+      <div class="relative flex-1 w-full">
+        <input
+          type="search"
+          name="search"
+          placeholder="Search Mentorship..."
+          value="{{ request.GET.search }}"
+          class="w-full p-2 pl-10 text-sm border border-border bg-background rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+        />
+        <svg
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+      </div>
+
+      <button
+        type="submit"
+        class="py-1 px-3 bg-emerald-600 text-white text-sm hover:bg-emerald-700 rounded focus:outline-none"
+      >
+        Search
+      </button>
+
+      <a
+        href="{% url 'home' %}"
+        class="py-1 px-3 bg-emerald-600 text-white text-sm hover:bg-emerald-700 rounded focus:outline-none"
+      >
+        Clear
+      </a>
+    </form>
+
+    <a
+      href="{% url 'create_mentor' %}"
+      class="bg-emerald-600 text-white px-4 py-2 rounded mt-4 max-md:w-full text-center"
+    >
+      Create Mentorship
+    </a>
+  </div>
+
+  {% if mentorships %}
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 max-sm:grid-cols-1 mb-6">
+      {% for mentorship in mentorships %}
+        <div class="grid grid-rows-subgrid row-span-8 border border-border  rounded-md shadow-md justify-center items-center text-center p-4">
+          {% if mentorship.picture %}
+            <div class="image-wrapper">
+              <img
+              src="{{ mentorship.picture.url|image_placeholder_size }}"
+              data-src="{{ mentorship.picture.url }}"
+              alt="{{ mentorship.name }}"
+              class="lazy-image mx-auto blur"
+              loading="lazy"
+              />
+            </div>
+          {% else %}
+            <p class="text-foreground">No picture available</p>
+          {% endif %}
+
+          <h2 class="text-xl">
+            <strong>Name:</strong>
+            <a href="{% url 'update_mentor' mentorship.id %}" class="hover:underline text-emerald-600">
+              {{ mentorship.name }}
+            </a>
+          </h2>
+
+          <p class="text-foreground">
+            <strong>Company:</strong> {{ mentorship.company }}
+          </p>
+
+          <p class="text-foreground">
+            <strong>Status:</strong>
+            <span class="ml-1 {% if mentorship.status|lower == 'working' %}text-emerald-500{% else %}text-red-500{% endif %}">
+              {% if mentorship.status|lower == 'working' %}
+                💚 Working
+              {% else %}
+                🔴 Not Working
+              {% endif %}
+            </span>
+          </p>
+
+          <p class="text-foreground">
+            <strong>User:</strong> {{ mentorship.user }}
+          </p>
+
+          <p class="text-foreground">
+            <strong>Comentor:</strong> {{ mentorship.comentor }}
+          </p>
+
+          <p class="text-foreground">
+            <strong>Content:</strong> {{ mentorship.content|safe }}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+      <div class="flex justify-center items-center gap-4 mb-6">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="border rotate-180 p-1 size-6 rounded-sm" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" class="border p-1 size-6 rounded-sm" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% else %}
+    <p>No mentorships available.</p>
+  {% endif %}
+</div>
+
+<!-- Chart.js for Status Distribution -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('statusChart');
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: {{ estagios_flat|safe }},
+      datasets: [{
+        label: 'Mentorship Status',
+        data: {{ qtd_estagios|safe }},
+        borderWidth: 1,
+        backgroundColor: [
+          '#DC2626',  // Emerald (Working)
+          '#10B981'  // Red (Not Working)
+          
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Mentorship Status Distribution'
+        }
+      }
+    }
+  });
+</script>
+{% endblock body %}
+
+{% block page_js %}
+
+  <script src="{% static 'js/lazy.js' %}"></script>
+{% endblock page_js %}
+

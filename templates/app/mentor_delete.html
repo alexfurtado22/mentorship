@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+<section class="col-span-2 grid place-items-center justify-center min-h-[70vh] px-4">
+  <div class="w-full max-w-md bg-background p-8 rounded-xl shadow-lg border border-border text-center">
+    <h1 class="text-2xl font-bold text-red-600 mb-4">Delete Mentee</h1>
+    <p class="text-foreground mb-6">
+      Are you sure you want to delete 
+      <span class="font-semibold text-foreground">"{{ mentorship.name }}"</span>?
+    </p>
+
+    <form
+      action="{% url 'delete_mentor' mentorship.pk %}"
+      method="POST"
+      enctype="multipart/form-data"
+      class="flex flex-col justify-center gap-4"
+    >
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="w-full  bg-red-600 hover:bg-red-500 max-sm:text-fluid-00 text-white px-4 py-2 rounded-md font-semibold transition"
+      >
+        Yes, delete
+      </button>
+      
+      <a
+        href="{% url 'update_mentor' mentorship.pk %}"
+        class="w-full flex justify-center items-center  bg-emerald-600 hover:bg-emerald-400 max-sm:text-fluid-00 text-white px-4 py-2 rounded-md font-semibold transition"
+        
+      >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-3"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        No, take me back
+      </a>
+    
+    </form>
+  </div>
+</section>
+{% endblock body %}

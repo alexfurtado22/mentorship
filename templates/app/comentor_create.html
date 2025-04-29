@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static widget_tweaks %}
+
+{% block body %}
+<div class="min-h-[70vh] grid place-items-center px-4">
+  <div class="w-full max-w-md p-8 rounded-xl shadow-lg border border-border">
+    <h1 class="text-2xl font-bold mb-6 text-center">Create Co-Mentor</h1>
+
+    <form x-data="mentorCreate" method="post" class="space-y-4">
+      {% csrf_token %}
+
+      {# Show non-field errors (like unique_together violations) #}
+      {% if form.non_field_errors %}
+        <div class="text-red-600 text-sm mb-4">
+          {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div>
+        <label for="{{ form.name.id_for_label }}" class="sr-only">Name</label>
+        {% render_field form.name class="block w-full rounded-md border border-border bg-background p-2 focus:ring-emerald-500 focus:border-emerald-500" x-model="name" %}
+        
+        <div class="flex justify-end text-xs">
+          <p>
+            <span 
+              x-text="`${255 - name.length} characters remaining`"
+              :class="{
+                'text-gray-600': (255 - name.length) >= 50,
+                'text-yellow-500': (255 - name.length) < 50 && (255 - name.length) >= 20,
+                'text-red-500': (255 - name.length) < 20
+              }"
+            ></span>
+          </p>
+        </div>
+
+        {% if form.name.errors %}
+          <div class="text-red-600 text-sm mt-1">
+            {% for error in form.name.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700 font-semibold transition"
+      >
+        Create Co-Mentor
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'create_mentor' %}" class="text-emerald-600 hover:underline">
+        ← Back to Mentor Form
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock body %}
