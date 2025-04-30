@@ -1,0 +1,89 @@
+@import url("./theme.9a975d800425.css");
+@import url("./utils.80e91e9a9c28.css");
+@import url("./grid.436c68e6a144.css");
+@import url("./flex.6c5983f99ac6.css");
+@tailwind utilities;
+
+@theme {
+  --breakpoint-xxxs: 15rem;
+  --breakpoint-xxs: 24rem;
+  --breakpoint-xs: 32rem;
+  --breakpoint-smd: 42rem;
+  --breakpoint-lmd: 48rem;
+  --breakpoint-2xl: 100rem;
+  --breakpoint-3xl: 120rem;
+}
+
+@theme {
+  --text-fluid-00: clamp(0.5rem, 2vw, 1rem);
+  --text-fluid-0: clamp(0.75rem, 2vw, 1rem);
+  --text-fluid-base: clamp(1.125rem, 3vw, 1.5rem);
+  --text-fluid-1: clamp(1rem, 4vw, 1.5rem);
+  --text-fluid-2: clamp(1.5rem, 6vw, 2.5rem);
+  --text-fluid-3: clamp(2rem, 9vw, 3.5rem);
+  --text-fluid-4: clamp(2rem, 4vw, 3rem);
+  --text-fluid-5: clamp(4rem, 5vw, 5rem);
+  --text-fluid-6: clamp(5rem, 7vw, 7.5rem);
+  --text-fluid-7: clamp(7.5rem, 10vw, 10rem);
+  --text-fluid-8: clamp(10rem, 20vw, 15rem);
+  --text-fluid-9: clamp(15rem, 30vw, 20rem);
+  --text-fluid-10: clamp(20rem, 40vw, 30rem);
+}
+
+* {
+  line-height: calc(1em + 0.5rem);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), sans-serif; /* Ensuring font-family is applied */
+}
+/* Balance text wrapping on headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption {
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+header,
+main,
+aside,
+section,
+article,
+footer {
+  container-type: inline-size;
+}
+
+li {
+  text-decoration: none;
+}
+
+/* Scrollbar */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0 oklch(0 0 0);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--clr-neon-pink);
+  outline: 1px solid var(--clr-neon-pink);
+}
