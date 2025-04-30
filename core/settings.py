@@ -40,15 +40,12 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-
-def is_truthy(value: str) -> bool:
-    """
-    Checks if a string value should be considered True.
-    """
-    return value.lower() in ("true", "1", "yes")
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
-DEBUG = is_truthy(os.getenv("DEBUG", "False"))
+if ENV_STATE == "production":
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 
 ALLOWED_HOSTS = ["*"]
@@ -225,7 +222,8 @@ STATIC_URL = "/static/"  # URL for serving static files
 
 # Static files will be collected from this location during development
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "theme/static"),  # Points to 'theme/static'
+    BASE_DIR / "theme/static",  # Points to 'static'
+    BASE_DIR / "theme/static_src/src",  # Points to 'src'
 ]
 
 # The directory where static files will be collected for production (run 'collectstatic' in production)
