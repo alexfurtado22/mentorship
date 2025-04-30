@@ -17,7 +17,7 @@ venv/
 db.sqlite3
 *.log
 media/
-staticfiles/
+
 local_settings.py
 
 

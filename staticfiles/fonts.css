@@ -1,0 +1,22 @@
+@tailwind utilities;
+
+@theme {
+  --font-sans: "InterVariable", sans-serif;
+  --font-serif: "Playfair Display", serif; /* Use the same name as defined in @font-face */
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/theme/static/fonts/inter-v18-latin-regular.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Playfair Display"; /* This should match the variable name */
+  src: url("/theme/static/fonts/PlayfairDisplay-Regular.woff2") format("woff2");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
