@@ -2,6 +2,7 @@
 @import "./utils.css";
 @import "./grid.css";
 @import "./flex.css";
+@import "./fonts.css";
 @tailwind utilities;
 
 @theme {
