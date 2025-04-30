@@ -16,6 +16,10 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://mentorship-vxe0.onrender.com",
+]
+
 ENV_STATE = os.getenv("ENV_STATE")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
