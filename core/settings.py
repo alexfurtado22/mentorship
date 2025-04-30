@@ -222,7 +222,7 @@ STATIC_URL = "/static/"  # URL for serving static files
 
 # Static files will be collected from this location during development
 STATICFILES_DIRS = [
-    BASE_DIR / "theme/static",  # Points to 'static'
+    BASE_DIR / "theme/static/css/dist",  # Points to 'static'
 ]
 
 # The directory where static files will be collected for production (run 'collectstatic' in production)
