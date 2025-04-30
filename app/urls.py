@@ -1,5 +1,4 @@
-from django.conf import settings
-from django.urls import include, path
+from django.urls import path
 
 from app.views import (
     CoMentorCreateView,
@@ -20,11 +19,3 @@ urlpatterns = [
     ),  # ✅ Correct
     path("comentor/create/", CoMentorCreateView.as_view(), name="create-comentor"),
 ]
-
-# ✅ only include the debug toolbar in DEBUG mode
-if settings.DEBUG:
-    import debug_toolbar
-
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
