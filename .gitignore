@@ -16,8 +16,6 @@ venv/
 # Django
 db.sqlite3
 *.log
-media/
-
 local_settings.py
 
 
